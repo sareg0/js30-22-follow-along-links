@@ -27,23 +27,25 @@
 
   <script>
     const listItems = document.querySelectorAll('a')
-    listItems.forEach((item) => item.addEventListener('mouseover', focusTheThing))
-    listItems.forEach((item) => item.addEventListener('focus', focusTheThing))
+    listItems.forEach((item) => item.addEventListener('mouseenter', highlightLink))
+    listItems.forEach((item) => item.addEventListener('focus', highlightLink))
     const highlight = document.createElement('span')
     highlight.classList.add('highlight')
     document.body.appendChild(highlight)
 
-    function focusTheThing (event) {
+    function highlightLink (event) {
       const linkPosition = this.getBoundingClientRect()
-      const windowScrollPosition = window.scrollY
-      const width = linkPosition.width
-      const height = linkPosition.height
-      const windowX = linkPosition.x
-      const windowY = linkPosition.y + windowScrollPosition
 
-      highlight.style.transform = `translate(${windowX}px, ${windowY}px)`
-      highlight.style.width = `${width}px`
-      highlight.style.height = `${height}px`
+      const coords = {
+        width: linkPosition.width,
+        height: linkPosition.height,
+        top: linkPosition.y + window.scrollY,
+        left: linkPosition.x + window.scrollX
+      }
+
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`
+      highlight.style.width = `${coords.width}px`
+      highlight.style.height = `${coords.height}px`
 
     }
 
